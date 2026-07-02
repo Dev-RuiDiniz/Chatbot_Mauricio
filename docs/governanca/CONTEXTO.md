@@ -116,6 +116,10 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
   - Verificar se há links Markdown quebrados após a movimentação.
   - Commitar e publicar a reorganização.
 
+- **Resultado final:**
+  - Commit realizado: `f56666d` — `docs(organizacao): reorganiza documentacao em docs/ mantendo apenas README.md e AGENTS.md na raiz`.
+  - Push realizado: `01b3543..f56666d` para `main`.
+
 ---
 
 ## 4. Decisões Técnicas e Arquiteturais

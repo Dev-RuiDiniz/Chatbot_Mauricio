@@ -86,6 +86,14 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
   - Detalhes: adicionar seção de histórico e tarefas de reorganização.
   - Resultado: documentação atualizada.
 
+- [x] Executar commit da reorganização
+  - Detalhes: `git commit -m "docs(organizacao): reorganiza documentacao em docs/ mantendo apenas README.md e AGENTS.md na raiz"`.
+  - Resultado: commit realizado com sucesso (`f56666d`).
+
+- [x] Executar push da reorganização
+  - Detalhes: `git push`.
+  - Resultado: push realizado com sucesso (`01b3543..f56666d`, main → main).
+
 ---
 
 ### 3. Arquivos Criados ou Modificados
