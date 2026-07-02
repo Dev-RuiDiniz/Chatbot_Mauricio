@@ -66,19 +66,43 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
   - Detalhes: registro diário do dia e template para próximos dias.
   - Resultado: arquivo criado na raiz.
 
+- [x] Executar commit dos arquivos de documentação
+  - Detalhes: `git commit -m "docs(governanca): adiciona documentacao estrutural do repositorio"`.
+  - Resultado: commit realizado com sucesso (`01b3543`, 7 arquivos, 2634 inserções).
+
+- [x] Executar push para o repositório remoto
+  - Detalhes: `git push`.
+  - Resultado: push realizado com sucesso para `https://github.com/Dev-RuiDiniz/Chatbot_Mauricio.git` (main → main).
+
+- [x] Reorganizar arquivos de documentação estrutural na raiz
+  - Detalhes: manter apenas `README.md` e `AGENTS.md` na raiz; mover `ARQUITETURA.md`, `BANCO_DADOS.md`, `ESCOPO.md`, `ROADMAP.md`, `CONTEXTO.md` e `RELATORIO.md` para `docs/governanca/`.
+  - Resultado: arquivos movidos com sucesso; git reconheceu como rename (`R`).
+
+- [x] Reorganizar documentação técnica e auditoria na raiz
+  - Detalhes: mover guias, MVP, walkthroughs, relatórios de auditoria e build output para `docs/technical/`, `docs/auditoria/` e `docs/build/`.
+  - Resultado: raiz contém apenas `README.md` e `AGENTS.md`.
+
+- [x] Atualizar `CONTEXTO.md` e `RELATORIO.md` para refletir a reorganização
+  - Detalhes: adicionar seção de histórico e tarefas de reorganização.
+  - Resultado: documentação atualizada.
+
 ---
 
 ### 3. Arquivos Criados ou Modificados
 
 | Arquivo | Ação | Descrição |
 |---|---|---|
-| `AGENTS.md` | Criado | Regras de execução dos agentes no repositório |
-| `ARQUITETURA.md` | Criado | Arquitetura completa e funcionalidades do sistema |
-| `BANCO_DADOS.md` | Criado | Arquitetura de banco de dados, modelos e migrações |
-| `ESCOPO.md` | Criado | Escopo funcional e não funcional do projeto |
-| `ROADMAP.md` | Criado | Fases de desenvolvimento com SDD e TDD |
-| `CONTEXTO.md` | Criado | Histórico, decisões e estado atual do projeto |
-| `RELATORIO.md` | Criado | Registro diário de desenvolvimento |
+| `AGENTS.md` | Criado | Regras de execução dos agentes no repositório (permanece na raiz) |
+| `README.md` | Existente | README do projeto (permanece na raiz) |
+| `ARQUITETURA.md` | Criado / Movido | Arquitetura completa e funcionalidades do sistema (`docs/governanca/`) |
+| `BANCO_DADOS.md` | Criado / Movido | Arquitetura de banco de dados, modelos e migrações (`docs/governanca/`) |
+| `ESCOPO.md` | Criado / Movido | Escopo funcional e não funcional do projeto (`docs/governanca/`) |
+| `ROADMAP.md` | Criado / Movido | Fases de desenvolvimento com SDD e TDD (`docs/governanca/`) |
+| `CONTEXTO.md` | Criado / Movido | Histórico, decisões e estado atual do projeto (`docs/governanca/`) |
+| `RELATORIO.md` | Criado / Movido | Registro diário de desenvolvimento (`docs/governanca/`) |
+| Documentação técnica | Movido | `API_INTEGRATION_GUIDE.md`, `BACKEND_API_GUIDE.md`, `integration_guide.md`, `MVP_FEATURES.md`, `MVP_ROADMAP.md`, `projeto-documentacao.md`, `walkthrough.md`, `walkthrough_fotos_perfil.md`, `agent_flow_integration_guide.md`, `api_integration_documentation.md` (`docs/technical/`) |
+| Relatórios de auditoria | Movido | `backend_audit_report.md`, `backend_minucious_audit_report.md`, `backend_audit_report.pdf` (`docs/auditoria/`) |
+| Build output | Movido | `build_output.txt` (`docs/build/`) |
 
 ---
 
@@ -124,7 +148,8 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 |---|---|---|
 | Criar 7 arquivos de documentação na raiz | Solicitação do usuário e necessidade de governança | Base de documentação estrutural para agentes futuros |
 | Preservar legados .NET e Python sem modificações | Não fazer alterações sem necessidade comprovada | Manter histórico e evitar quebras |
-| Não executar commit nem push | Aguardar autorização explícita do usuário | Seguir regras de `AGENTS.md` |
+| Executar commit e push após autorização explícita | Usuário solicitou explicitamente | Documentação publicada no repositório remoto |
+| Reorganizar documentação na raiz | Usuário solicitou: manter apenas README.md e AGENTS.md na raiz | Documentação estrutural concentrada em `docs/governanca/` |
 | Marcar informações não confirmadas como `A CONFIRMAR` / `PENDENTE` | Não inventar dados | Documentação confiável e auditável |
 
 ---

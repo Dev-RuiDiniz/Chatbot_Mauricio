@@ -53,7 +53,7 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
   - Criar os 7 arquivos de governança e documentação solicitados na raiz.
   - Preservar legados .NET e Python sem modificações.
   - Documentar tudo o que foi confirmado e marcar o que não foi como `A CONFIRMAR` / `PENDENTE DE VALIDAÇÃO` / `NÃO IDENTIFICADO`.
-  - Não executar commit nem push sem autorização explícita.
+  - Executar commit e push dos arquivos de documentação após autorização explícita do usuário.
 
 - **O que foi criado:**
   - `AGENTS.md` — regras de execução dos agentes.
@@ -67,11 +67,11 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
 - **O que foi alterado:**
   - Nenhum código funcional alterado.
   - Nenhuma configuração alterada.
+  - `RELATORIO.md` e `CONTEXTO.md` atualizados para refletir o commit e push realizados.
 
 - **O que ficou pendente:**
-  - Validar se arquivos já existiam (verificação: não existiam na raiz).
   - Validar build e testes locais.
-  - Complementar `RELATORIO.md` com o registro do dia.
+  - Commitar a atualização de `RELATORIO.md` e `CONTEXTO.md` (se desejado pelo usuário).
 
 - **Evidências no repositório:**
   - `node-version/package.json`
@@ -81,6 +81,40 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
   - `chatbot/composer.json`, `chatbot/database/schema.sql`, `chatbot/src/`
   - `docker-compose.yml`
   - `MVP_FEATURES.md`, `MVP_ROADMAP.md`, `projeto-documentacao.md`
+
+### 2026-07-02 — Reorganização da documentação
+
+- **O que foi decidido:**
+  - Manter na raiz apenas `README.md` e `AGENTS.md`.
+  - Organizar toda a documentação em `docs/` com subpastas temáticas.
+
+- **O que foi alterado:**
+  - `AGENTS.md` permaneceu na raiz.
+  - `README.md` permaneceu na raiz.
+  - `ARQUITETURA.md` movido para `docs/governanca/ARQUITETURA.md`.
+  - `BANCO_DADOS.md` movido para `docs/governanca/BANCO_DADOS.md`.
+  - `ESCOPO.md` movido para `docs/governanca/ESCOPO.md`.
+  - `ROADMAP.md` movido para `docs/governanca/ROADMAP.md`.
+  - `CONTEXTO.md` movido para `docs/governanca/CONTEXTO.md`.
+  - `RELATORIO.md` movido para `docs/governanca/RELATORIO.md`.
+  - `API_INTEGRATION_GUIDE.md` movido para `docs/technical/API_INTEGRATION_GUIDE.md`.
+  - `BACKEND_API_GUIDE.md` movido para `docs/technical/BACKEND_API_GUIDE.md`.
+  - `agent_flow_integration_guide.md` movido para `docs/technical/agent_flow_integration_guide.md`.
+  - `api_integration_documentation.md` movido para `docs/technical/api_integration_documentation.md`.
+  - `integration_guide.md` movido para `docs/technical/integration_guide.md`.
+  - `MVP_FEATURES.md` movido para `docs/technical/MVP_FEATURES.md`.
+  - `MVP_ROADMAP.md` movido para `docs/technical/MVP_ROADMAP.md`.
+  - `projeto-documentacao.md` movido para `docs/technical/projeto-documentacao.md`.
+  - `walkthrough.md` movido para `docs/technical/walkthrough.md`.
+  - `walkthrough_fotos_perfil.md` movido para `docs/technical/walkthrough_fotos_perfil.md`.
+  - `backend_audit_report.md` movido para `docs/auditoria/backend_audit_report.md`.
+  - `backend_minucious_audit_report.md` movido para `docs/auditoria/backend_minucious_audit_report.md`.
+  - `backend_audit_report.pdf` movido para `docs/auditoria/backend_audit_report.pdf`.
+  - `build_output.txt` movido para `docs/build/build_output.txt`.
+
+- **O que ficou pendente:**
+  - Verificar se há links Markdown quebrados após a movimentação.
+  - Commitar e publicar a reorganização.
 
 ---
 
