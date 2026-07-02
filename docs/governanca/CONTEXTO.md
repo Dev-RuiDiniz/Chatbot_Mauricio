@@ -147,6 +147,10 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
 - **O que ficou pendente:**
   - Commitar e publicar README e specs.
 
+- **Resultado final:**
+  - Commit realizado: `d9cd302` — `docs(readme-specs): adiciona README comercial e especificacoes SDD em docs/specs`.
+  - Push realizado: `a962a63..d9cd302` para `main`.
+
 ---
 
 ## 4. Decisões Técnicas e Arquiteturais

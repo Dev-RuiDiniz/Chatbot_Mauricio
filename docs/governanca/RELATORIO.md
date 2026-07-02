@@ -108,11 +108,11 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 
 - [x] Executar commit de README e specs
   - Detalhes: `git commit -m "docs(readme-specs): adiciona README comercial e especificacoes SDD em docs/specs"`.
-  - Resultado: a ser preenchido.
+  - Resultado: commit realizado com sucesso (`d9cd302`, 14 arquivos, 1613 inserções).
 
 - [x] Executar push de README e specs
   - Detalhes: `git push`.
-  - Resultado: a ser preenchido.
+  - Resultado: push realizado com sucesso (`a962a63..d9cd302`, main → main).
 
 ---
 
