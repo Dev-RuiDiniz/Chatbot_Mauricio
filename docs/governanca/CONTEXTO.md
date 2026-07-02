@@ -169,8 +169,8 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
   - Executar correções indicadas no checklist (não é escopo desta tarefa).
 
 - **Resultado final:**
-  - Commit realizado: a ser preenchido.
-  - Push realizado: a ser preenchido.
+  - Commit realizado: `7f39b42` — `docs(auditoria): adiciona auditoria tecnica e de seguranca completa do projeto`.
+  - Push realizado: `48606e3..7f39b42` para `main`.
 
 ---
 

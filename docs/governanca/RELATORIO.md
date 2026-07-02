@@ -140,11 +140,11 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 
 - [x] Executar commit da auditoria
   - Detalhes: `git commit -m "docs(auditoria): adiciona auditoria tecnica e de seguranca completa do projeto"`.
-  - Resultado: a ser preenchido.
+  - Resultado: commit realizado com sucesso (`7f39b42`, 3 arquivos, 280 inserções).
 
 - [x] Executar push da auditoria
   - Detalhes: `git push`.
-  - Resultado: a ser preenchido.
+  - Resultado: push realizado com sucesso (`48606e3..7f39b42`, main → main).
 
 ---
 
