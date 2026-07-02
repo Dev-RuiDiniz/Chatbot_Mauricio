@@ -120,6 +120,33 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
   - Commit realizado: `f56666d` — `docs(organizacao): reorganiza documentacao em docs/ mantendo apenas README.md e AGENTS.md na raiz`.
   - Push realizado: `01b3543..f56666d` para `main`.
 
+### 2026-07-02 — README comercial e especificações SDD
+
+- **O que foi decidido:**
+  - Criar um `README.md` na raiz com linguagem comercial e executiva, focado em valor para clientes.
+  - Criar a pasta `docs/specs/` com especificações técnicas em SDD para todos os módulos do sistema.
+
+- **O que foi criado:**
+  - `README.md` na raiz — descrição comercial, beneficios, funcionalidades, público-alvo e guia de documentação.
+  - `docs/specs/README.md` — índice das especificações.
+  - `docs/specs/spec-auth.md` — Especificação de Autenticação e Identidade.
+  - `docs/specs/spec-whatsapp.md` — Especificação de WhatsApp Gateway.
+  - `docs/specs/spec-chat.md` — Especificação de Chat / Inbox.
+  - `docs/specs/spec-contacts.md` — Especificação de Contatos e Tags.
+  - `docs/specs/spec-flow.md` — Especificação de Flow Engine.
+  - `docs/specs/spec-ai.md` — Especificação de Inteligência Artificial.
+  - `docs/specs/spec-billing.md` — Especificação de Billing e Planos.
+  - `docs/specs/spec-campaigns.md` — Especificação de Campanhas.
+  - `docs/specs/spec-admin.md` — Especificação de Admin e Revendas.
+  - `docs/specs/spec-frontend.md` — Especificação de Frontend PHP.
+
+- **O que foi alterado:**
+  - `README.md` substituído (conteúdo mínimo de 18 bytes por documentação comercial completa).
+  - `docs/governanca/CONTEXTO.md` e `docs/governanca/RELATORIO.md` atualizados para registrar as mudanças.
+
+- **O que ficou pendente:**
+  - Commitar e publicar README e specs.
+
 ---
 
 ## 4. Decisões Técnicas e Arquiteturais

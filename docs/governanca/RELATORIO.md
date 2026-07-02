@@ -94,6 +94,26 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
   - Detalhes: `git push`.
   - Resultado: push realizado com sucesso (`01b3543..f56666d`, main → main).
 
+- [x] Criar `README.md` comercial na raiz
+  - Detalhes: descrição executiva, beneficios, funcionalidades, público-alvo, tecnologia, segurança e guia de documentação.
+  - Resultado: README substituído com conteúdo comercial.
+
+- [x] Criar pasta `docs/specs/` com especificações SDD
+  - Detalhes: 11 arquivos de especificação cobrindo autenticação, WhatsApp, chat, contatos, fluxos, IA, billing, campanhas, admin, frontend e índice.
+  - Resultado: especificações criadas seguindo formato SDD.
+
+- [x] Atualizar `CONTEXTO.md` e `RELATORIO.md` para registrar README e specs
+  - Detalhes: adicionar seções de histórico e tarefas.
+  - Resultado: documentação atualizada.
+
+- [x] Executar commit de README e specs
+  - Detalhes: `git commit -m "docs(readme-specs): adiciona README comercial e especificacoes SDD em docs/specs"`.
+  - Resultado: a ser preenchido.
+
+- [x] Executar push de README e specs
+  - Detalhes: `git push`.
+  - Resultado: a ser preenchido.
+
 ---
 
 ### 3. Arquivos Criados ou Modificados
@@ -101,7 +121,19 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 | Arquivo | Ação | Descrição |
 |---|---|---|
 | `AGENTS.md` | Criado | Regras de execução dos agentes no repositório (permanece na raiz) |
-| `README.md` | Existente | README do projeto (permanece na raiz) |
+| `README.md` | Atualizado | README comercial e executivo para clientes (permanece na raiz) |
+| `docs/specs/` | Criado | Pasta com especificações SDD do sistema |
+| `docs/specs/README.md` | Criado | Índice das especificações |
+| `docs/specs/spec-auth.md` | Criado | Especificação de Autenticação e Identidade |
+| `docs/specs/spec-whatsapp.md` | Criado | Especificação de WhatsApp Gateway |
+| `docs/specs/spec-chat.md` | Criado | Especificação de Chat / Inbox |
+| `docs/specs/spec-contacts.md` | Criado | Especificação de Contatos e Tags |
+| `docs/specs/spec-flow.md` | Criado | Especificação de Flow Engine |
+| `docs/specs/spec-ai.md` | Criado | Especificação de Inteligência Artificial |
+| `docs/specs/spec-billing.md` | Criado | Especificação de Billing e Planos |
+| `docs/specs/spec-campaigns.md` | Criado | Especificação de Campanhas |
+| `docs/specs/spec-admin.md` | Criado | Especificação de Admin e Revendas |
+| `docs/specs/spec-frontend.md` | Criado | Especificação de Frontend PHP |
 | `ARQUITETURA.md` | Criado / Movido | Arquitetura completa e funcionalidades do sistema (`docs/governanca/`) |
 | `BANCO_DADOS.md` | Criado / Movido | Arquitetura de banco de dados, modelos e migrações (`docs/governanca/`) |
 | `ESCOPO.md` | Criado / Movido | Escopo funcional e não funcional do projeto (`docs/governanca/`) |
@@ -158,6 +190,7 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 | Preservar legados .NET e Python sem modificações | Não fazer alterações sem necessidade comprovada | Manter histórico e evitar quebras |
 | Executar commit e push após autorização explícita | Usuário solicitou explicitamente | Documentação publicada no repositório remoto |
 | Reorganizar documentação na raiz | Usuário solicitou: manter apenas README.md e AGENTS.md na raiz | Documentação estrutural concentrada em `docs/governanca/` |
+| Criar README comercial e specs SDD | Usuário solicitou linguagem comercial e especificações baseadas em SDD | README focado em clientes; especificações técnicas em `docs/specs/` |
 | Marcar informações não confirmadas como `A CONFIRMAR` / `PENDENTE` | Não inventar dados | Documentação confiável e auditável |
 
 ---
