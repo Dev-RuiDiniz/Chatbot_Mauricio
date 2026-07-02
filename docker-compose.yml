@@ -1,0 +1,142 @@
+services:
+  saas_postgres:
+    image: postgres:16-alpine
+    container_name: saas_postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=saas_omnichannel
+    # Porta só acessível internamente pela rede Docker
+    # (porta 5432 do host já pode estar em uso por outro projeto)
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  saas_redis:
+    image: redis:7-alpine
+    container_name: saas_redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  saas_rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: saas_rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+
+  saas_mongo:
+    image: mongo:7
+    container_name: saas_mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=saas_chatbot
+      - MONGO_INITDB_ROOT_PASSWORD=3702959
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+  saas_api:
+    build:
+      context: ./node-version
+      dockerfile: Dockerfile
+    container_name: saas_node_api
+    depends_on:
+      - saas_postgres
+      - saas_redis
+      - saas_rabbitmq
+      - saas_mongo
+      - saas_ollama
+    environment:
+      - DOCKER_CONTAINER=true
+      - POSTGRES_SERVER=saas_postgres
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=saas_omnichannel
+      - MONGODB_URL=mongodb://saas_chatbot:3702959@saas_mongo:27017/SaaS_Chatbot?authSource=admin
+      - REDIS_URL=redis://saas_redis:6379/0
+      - RABBITMQ_URL=amqp://admin:password123@saas_rabbitmq/
+      - OLLAMA_URL=http://saas_ollama:11434
+    ports:
+      - "8001:8000"
+    volumes:
+      - uploads_data:/app/uploads
+      - ./node-version/src:/app/src
+      - tokens_data:/app/tokens
+    restart: always
+
+  saas_ollama:
+    image: ollama/ollama:latest
+    container_name: saas_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: always
+
+  saas_mysql:
+    image: mysql:8.0
+    container_name: saas_mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password123
+      - MYSQL_DATABASE=chatbot_db
+    ports:
+      - "3309:3306" # Porta 3309 externa evita conflito com o MySQL local do WAMP/XAMPP (3306)
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./chatbot/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    restart: always
+
+  saas_ui:
+    build:
+      context: ./chatbot
+      dockerfile: Dockerfile
+    container_name: saas_ui
+    depends_on:
+      - saas_mysql
+      - saas_api
+    environment:
+      - DB_HOST=saas_mysql
+      - DB_PORT=3306
+      - DB_NAME=chatbot_db
+      - DB_USER=root
+      - DB_PASS=password123
+      - API_BASE_URL=http://saas_api:8000
+      - FRONTEND_API_URL=http://localhost:8001
+      - API_TIMEOUT=30
+      - API_BOT_TIMEOUT=60
+      - PROGRAMADOR_FULL_ACCESS_EMAILS=alex3andre@yahoo.com.br
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./chatbot:/var/www/html
+    restart: always
+
+  saas_nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: saas_nginx
+    depends_on:
+      - saas_ui
+      - saas_api
+    ports:
+      - "8080:80"   # Porta alternativa — 80 pode estar ocupada por outro projeto no host
+      - "8443:443"
+    restart: always
+
+volumes:
+  postgres_data:
+  mongo_data:
+  ollama_data:
+  mysql_data:
+  uploads_data:
+  tokens_data:

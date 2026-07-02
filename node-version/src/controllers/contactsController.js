@@ -1,0 +1,278 @@
+const { Contact, Tag } = require('../models/sql/models');
+const { Op } = require('sequelize');
+const phoneUtils = require('../utils/phoneUtils');
+
+const listContacts = async (req, res) => {
+  const { page = 1, limit = 50, search = '' } = req.query;
+  const offset = (page - 1) * limit;
+
+  try {
+    const whereClause = {
+      tenant_id: req.tenantId
+    };
+
+    if (search) {
+      whereClause[Op.and] = [
+        {
+          [Op.or]: [
+            { full_name: { [Op.iLike]: `%${search}%` } },
+            { phone_number: { [Op.iLike]: `%${search}%` } }
+          ]
+        }
+      ];
+    }
+
+    const { count, rows } = await Contact.findAndCountAll({
+      where: whereClause,
+      include: [{ model: Tag, as: 'Tags', through: { attributes: [] } }],
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: [['created_at', 'DESC']]
+    });
+
+    return res.json({ total: count, page: parseInt(page), data: rows });
+  } catch (e) {
+    return res.status(500).json({ detail: 'Error listing contacts' });
+  }
+};
+
+const createContact = async (req, res) => {
+  const { phone_number, full_name, tag_ids = [] } = req.body;
+  try {
+    const normalizedPhone = phoneUtils.normalizeToDb(phone_number);
+    const contact = await Contact.create({ 
+      phone_number: normalizedPhone, 
+      full_name,
+      tenant_id: req.tenantId
+    });
+
+    if (tag_ids.length > 0) {
+      const validTags = await Tag.findAll({
+        where: {
+          id: { [Op.in]: tag_ids },
+          tenant_id: req.tenantId
+        }
+      });
+      const validTagIds = validTags.map(t => t.id);
+      if (validTagIds.length > 0) {
+        await contact.addTags(validTagIds);
+      }
+    }
+    return res.status(201).json(contact);
+  } catch (e) {
+    return res.status(400).json({ detail: 'Error creating contact' });
+  }
+};
+
+const updateContact = async (req, res) => {
+  const { id } = req.params;
+  const { phone_number, full_name, is_blacklisted, tag_ids } = req.body;
+  try {
+    const contact = await Contact.findOne({ where: { id, tenant_id: req.tenantId } });
+    if (!contact) return res.status(404).json({ detail: 'Contact not found' });
+
+    const normalizedPhone = phone_number ? phoneUtils.normalizeToDb(phone_number) : contact.phone_number;
+    await contact.update({ phone_number: normalizedPhone, full_name, is_blacklisted });
+    
+    if (tag_ids !== undefined) {
+      if (tag_ids.length > 0) {
+        const validTags = await Tag.findAll({
+          where: {
+            id: { [Op.in]: tag_ids },
+            tenant_id: req.tenantId
+          }
+        });
+        await contact.setTags(validTags.map(t => t.id));
+      } else {
+        await contact.setTags([]);
+      }
+    }
+    
+    return res.json(contact);
+  } catch (e) {
+    return res.status(400).json({ detail: 'Error updating contact' });
+  }
+};
+
+const deleteContact = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const contact = await Contact.findOne({ where: { id, tenant_id: req.tenantId } });
+    if (!contact) return res.status(404).json({ detail: 'Contact not found' });
+    
+    await contact.destroy();
+    return res.json({ success: true });
+  } catch (e) {
+    return res.status(400).json({ detail: 'Error deleting contact' });
+  }
+};
+
+const whatsappCore = require('../services/whatsappCore');
+const { WhatsAppInstance } = require('../models/sql/models');
+
+const getActiveSessionName = async (tenantId) => {
+  const instance = await WhatsAppInstance.findOne({ where: { tenant_id: tenantId } });
+  if (!instance || instance.status !== 'CONNECTED') {
+    throw new Error('Agente não está conectado ao WhatsApp. Conecte o bot primeiro.');
+  }
+  return instance.session_name;
+};
+
+const listWhatsappContacts = async (req, res) => {
+  try {
+    // Retorna contatos diretamente do banco — já têm profile_pic_url preenchido pelo syncContactsToDb
+    const { page = 1, limit = 200, search = '' } = req.query;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    const whereClause = { tenant_id: req.user.tenant_id };
+    if (search) {
+      whereClause[Op.or] = [
+        { full_name: { [Op.iLike]: `%${search}%` } },
+        { phone_number: { [Op.iLike]: `%${search}%` } }
+      ];
+    }
+
+    const { count, rows } = await Contact.findAndCountAll({
+      where: whereClause,
+      limit: parseInt(limit),
+      offset,
+      order: [['full_name', 'ASC']]
+    });
+
+    return res.json({
+      success: true,
+      total: count,
+      page: parseInt(page),
+      contacts: rows.map(c => ({
+        id: c.id,
+        phone_number: c.phone_number,
+        full_name: c.full_name,
+        profile_pic_url: c.profile_pic_url || null,
+        is_group: c.is_group || false,
+        is_blacklisted: c.is_blacklisted,
+        created_at: c.created_at,
+      }))
+    });
+  } catch (e) {
+    return res.status(409).json({ success: false, detail: e.message });
+  }
+};
+
+/**
+ * GET /api/v1/contacts/refresh-pics
+ * Dispara a atualização das fotos de perfil de todos os contatos do tenant em background.
+ * Útil para atualizar fotos que já expiraram (WhatsApp URLs têm validade).
+ */
+const refreshContactPics = async (req, res) => {
+  try {
+    const sessionName = await getActiveSessionName(req.user.tenant_id);
+    const sock = whatsappCore.sockets[sessionName];
+    if (!sock) {
+      return res.status(409).json({ success: false, detail: 'Bot não está conectado.' });
+    }
+
+    // Executa em background sem bloquear a resposta
+    res.json({ success: true, detail: 'Atualização de fotos iniciada em background.' });
+
+    const contacts = await Contact.findAll({ where: { tenant_id: req.user.tenant_id } });
+    const batchSize = 5;
+    for (let i = 0; i < contacts.length; i += batchSize) {
+      const batch = contacts.slice(i, i + batchSize);
+      await Promise.all(batch.map(async (contact) => {
+        try {
+          const jid = contact.is_group
+            ? `${contact.phone_number}`
+            : `${contact.phone_number}@s.whatsapp.net`;
+          const url = await sock.profilePictureUrl(jid, 'image');
+          if (url && url !== contact.profile_pic_url) {
+            await contact.update({ profile_pic_url: url });
+          }
+        } catch (e) {
+          // Sem foto — ignora
+        }
+      }));
+      await new Promise(r => setTimeout(r, 300)); // Rate-limit gentil
+    }
+  } catch (e) {
+    if (!res.headersSent) {
+      res.status(500).json({ success: false, detail: e.message });
+    }
+  }
+};
+
+
+const addWhatsappContact = async (req, res) => {
+  const { phone, name } = req.body;
+  
+  if (!phone) {
+    return res.status(400).json({ success: false, detail: 'O número de telefone é obrigatório' });
+  }
+
+  try {
+    const sessionName = await getActiveSessionName(req.user.tenant_id);
+    
+    // 1. Verifica se o número existe no WhatsApp (Baileys onWhatsApp)
+    const whatsappCheck = await whatsappCore.verifyContact(sessionName, phone);
+    if (!whatsappCheck || !whatsappCheck.exists) {
+      return res.status(400).json({ success: false, detail: 'O número informado não possui conta ativa no WhatsApp.' });
+    }
+
+    // 2. Persiste no banco de dados local do Tenant
+    const [dbContact, created] = await Contact.findOrCreate({
+      where: { tenant_id: req.user.tenant_id, phone_number: phone },
+      defaults: { full_name: name || `WhatsApp ${phone.slice(-4)}` }
+    });
+
+    if (!created && name) {
+      await dbContact.update({ full_name: name });
+    }
+
+    return res.status(201).json({
+      success: true,
+      contact: {
+        jid: whatsappCheck.jid,
+        exists: whatsappCheck.exists
+      },
+      persisted: dbContact
+    });
+
+  } catch (e) {
+    return res.status(409).json({ success: false, detail: e.message });
+  }
+};
+
+const editWhatsappContact = async (req, res) => {
+  const { phone } = req.params;
+  const { name } = req.body;
+  if (!phone) return res.status(400).json({ success: false, detail: 'O número de telefone é obrigatório' });
+
+  try {
+    const [dbContact, created] = await Contact.findOrCreate({
+      where: { tenant_id: req.user.tenant_id, phone_number: phone },
+      defaults: { full_name: name || `WhatsApp ${phone.slice(-4)}` }
+    });
+
+    if (!created && name) {
+      await dbContact.update({ full_name: name });
+    }
+
+    return res.json({ success: true, contact: dbContact });
+  } catch (e) {
+    return res.status(500).json({ success: false, detail: e.message });
+  }
+};
+
+const deleteWhatsappContact = async (req, res) => {
+  const { phone } = req.params;
+  try {
+    const contact = await Contact.findOne({ where: { tenant_id: req.user.tenant_id, phone_number: phone } });
+    if (contact) {
+      await contact.destroy();
+    }
+    return res.json({ success: true });
+  } catch (e) {
+    return res.status(500).json({ success: false, detail: e.message });
+  }
+};
+
+module.exports = { listContacts, createContact, updateContact, deleteContact, listWhatsappContacts, addWhatsappContact, editWhatsappContact, deleteWhatsappContact, refreshContactPics };
