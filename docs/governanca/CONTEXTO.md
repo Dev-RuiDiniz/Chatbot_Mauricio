@@ -151,6 +151,27 @@ O **SaaS Chatbot** é uma plataforma omnichannel de chatbots e atendimento human
   - Commit realizado: `d9cd302` — `docs(readme-specs): adiciona README comercial e especificacoes SDD em docs/specs`.
   - Push realizado: `a962a63..d9cd302` para `main`.
 
+### 2026-07-02 — Auditoria técnica e de segurança
+
+- **O que foi decidido:**
+  - Realizar auditoria completa do projeto (backend, frontend, infra, banco, segurança).
+  - Marcar na documentação o status de cada módulo (pronto/parcial/pendente).
+  - Criar `AUDITORIA.md` na raiz com achados, falhas, erros de lógica e checklist de correções.
+
+- **O que foi criado:**
+  - `AUDITORIA.md` na raiz — auditoria completa com falhas críticas, médias, erros de lógica, checklist e recomendações.
+
+- **O que foi alterado:**
+  - `docs/governanca/CONTEXTO.md` e `docs/governanca/RELATORIO.md` atualizados para registrar a auditoria.
+
+- **O que ficou pendente:**
+  - Commitar e publicar a auditoria.
+  - Executar correções indicadas no checklist (não é escopo desta tarefa).
+
+- **Resultado final:**
+  - Commit realizado: a ser preenchido.
+  - Push realizado: a ser preenchido.
+
 ---
 
 ## 4. Decisões Técnicas e Arquiteturais

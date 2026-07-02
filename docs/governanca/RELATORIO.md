@@ -114,6 +114,38 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
   - Detalhes: `git push`.
   - Resultado: push realizado com sucesso (`a962a63..d9cd302`, main → main).
 
+- [x] Auditar backend Node.js (controllers, services, models, middlewares, workers)
+  - Detalhes: revisão estática de `node-version/src/` e `server.js`.
+  - Resultado: falhas críticas, médias e erros de lógica documentados.
+
+- [x] Auditar frontend PHP (controllers, router, service, views)
+  - Detalhes: revisão estática de `chatbot/src/`.
+  - Resultado: backdoor programador, router simples, inputs não sanitizados identificados.
+
+- [x] Auditar infraestrutura, Docker, segurança e variáveis de ambiente
+  - Detalhes: revisão de `docker-compose.yml`, Dockerfiles, `.gitignore`, `.env`.
+  - Resultado: senhas hardcoded, `.env` versionado, serviços expostos documentados.
+
+- [x] Auditar banco de dados e modelos
+  - Detalhes: revisão de `models/sql/models.js`, `models/sql/index.js`, `models/nosql/`.
+  - Resultado: multi-tenancy por hooks, falta de constraints, `alter: true` em produção documentados.
+
+- [x] Criar `AUDITORIA.md` na raiz
+  - Detalhes: documento com resumo, status por módulo, falhas críticas/médias, erros de lógica, checklist e recomendações.
+  - Resultado: arquivo criado.
+
+- [x] Atualizar `CONTEXTO.md` e `RELATORIO.md` para registrar auditoria
+  - Detalhes: adicionar seção de histórico e tarefas.
+  - Resultado: documentação atualizada.
+
+- [x] Executar commit da auditoria
+  - Detalhes: `git commit -m "docs(auditoria): adiciona auditoria tecnica e de seguranca completa do projeto"`.
+  - Resultado: a ser preenchido.
+
+- [x] Executar push da auditoria
+  - Detalhes: `git push`.
+  - Resultado: a ser preenchido.
+
 ---
 
 ### 3. Arquivos Criados ou Modificados
@@ -122,6 +154,7 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 |---|---|---|
 | `AGENTS.md` | Criado | Regras de execução dos agentes no repositório (permanece na raiz) |
 | `README.md` | Atualizado | README comercial e executivo para clientes (permanece na raiz) |
+| `AUDITORIA.md` | Criado | Auditoria técnica e de segurança do projeto (permanece na raiz) |
 | `docs/specs/` | Criado | Pasta com especificações SDD do sistema |
 | `docs/specs/README.md` | Criado | Índice das especificações |
 | `docs/specs/spec-auth.md` | Criado | Especificação de Autenticação e Identidade |
@@ -191,6 +224,7 @@ Sessão dedicada à governança e documentação estrutural do repositório. Foi
 | Executar commit e push após autorização explícita | Usuário solicitou explicitamente | Documentação publicada no repositório remoto |
 | Reorganizar documentação na raiz | Usuário solicitou: manter apenas README.md e AGENTS.md na raiz | Documentação estrutural concentrada em `docs/governanca/` |
 | Criar README comercial e specs SDD | Usuário solicitou linguagem comercial e especificações baseadas em SDD | README focado em clientes; especificações técnicas em `docs/specs/` |
+| Realizar auditoria completa e criar AUDITORIA.md | Usuário solicitou auditoria e checklist de correções | Riscos críticos documentados; correções pendentes mapeadas |
 | Marcar informações não confirmadas como `A CONFIRMAR` / `PENDENTE` | Não inventar dados | Documentação confiável e auditável |
 
 ---
